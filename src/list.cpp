@@ -79,7 +79,7 @@ void List::delete_item()
 {
     std::cout << "\n\n\n\n";
     std::cout << "*** Delete Item ***\n";
-    std::cout << "Select an item index number to delete: ";
+    std::cout << "Select an item index number to delete: \n";
 
     std::int16_t index_to_delete; 
 

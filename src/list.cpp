@@ -9,14 +9,20 @@ void List::print_menu()
     std::cout << "1 - Print list.\n";
     std::cout << "2 - Add to list.\n";
     std::cout << "3 - Delete from list.\n";
-    std::cout << "4 - Quit\n";
+    std::cout << "4 - Save list.\n";
+    std::cout << "5 - Quit\n";
     std::cout << "Enter your choice and press return: ";
 
     std::cin >> choice;
 
-    if(choice == 4){
+    if(choice == 5){
         std::cout << "You have exit the app!\n";
-        exit(0);
+        return;  // 不带返回值的 return 语句，用于中断返回值为 void 类型的函数的执行
+        // return 0：带返回值的 return 语句，不可以用于 void 类型的函数
+    }
+    else if(choice == 4)
+    {
+        save_list();
     }
     else if(choice == 1)
     {
@@ -39,6 +45,7 @@ void List::print_menu()
 // Define a function to print the current SimpleList.
 void List::print_list()
 {
+    
     if(name_vector.size() == 0)
     {
         std::cout << "The list is empty!" << std::endl;
@@ -50,8 +57,13 @@ void List::print_list()
             std::cout << " * " << name_vector[i] << std::endl;
         }
     }
-    
-    print_menu();
+    std::cout << "M - Menu" << std::endl;
+    std::string choice;
+    std::cin >> choice;
+    if(choice == "M" || choice == "m")
+    {
+        print_menu();
+    }
 }
 
 
@@ -63,7 +75,11 @@ void List::add_item()
     std::cout << "Tpye in an item and press enter: ";
     
     std::string new_name;
-    std::cin >> new_name;
+    //std::cin >> new_name;
+    std::string str;
+    str = "\n";
+    getline(std::cin, str);
+    getline(std::cin, new_name);
     name_vector.push_back(new_name);  // name_vector is a vector(datatype: string), new_name is a string.
 
     std::cout<< "Successfully added an item to the list. \n\n\n\n";
@@ -102,4 +118,46 @@ void List::delete_item()
 
     print_menu();
 
+}
+
+
+bool List::find_userList()
+{
+    
+    bool userFound = false;  // set a flag to show if the user is found.
+    std::cout << "\n\n\n\n";
+    std::cout << "*** Welcome " << name << " ***\n";
+
+    for (int user_index=0; user_index < (int)mainList.size(); user_index++)
+    {
+        if (mainList[user_index][0] == name)
+        {
+            std::cout << "User has been found: " << mainList[user_index][0] << std::endl;
+            name_vector = mainList[user_index];
+            currUserIndex = user_index;
+            userFound = true;
+            break;
+        }
+    }
+
+    if (userFound == false)
+    {
+        std::cout << "User does not exist, add to list." << std::endl;
+        
+        name_vector.push_back(name);
+        mainList.push_back(name_vector);
+        currUserIndex = int(mainList.size()) - 1;
+        
+
+    }
+
+    return userFound;
+}
+
+void List::save_list()
+{
+    std::cout << "Saving the list..." << "\n";
+    mainList[currUserIndex] = name_vector;
+
+    print_menu();
 }
